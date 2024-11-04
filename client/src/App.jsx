@@ -1,8 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
-import LogIn from "./pages/auth/login";
-import Register from "./pages/auth/register";
 import AdminLayout from "./components/admin-view/Layout";
 import AdminDashboard from "./pages/admin-view/dashboard";
 import AdminFeature from "./pages/admin-view/feature";
@@ -15,10 +13,17 @@ import ShoppingHome from "./pages/shopping-view/home";
 import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingAccount from "./pages/shopping-view/account";
 import CheckAuth from "./components/common/check-auth";
+import UnauthPage from "./pages/unauth-page";
+import AuthRegister from "./pages/auth/register";
+import AuthLogIn from "./pages/auth/login";
 
 const App = () => {
   const isAuthenticated = false;
   const user = null;
+  // {
+  //   name: "Raj",
+  //   role: "user",
+  // };
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -34,8 +39,8 @@ const App = () => {
             </CheckAuth>
           }
         >
-          <Route path="login" element={<LogIn />} />
-          <Route path="register" element={<Register />} />
+          <Route path="login" element={<AuthLogIn />} />
+          <Route path="register" element={<AuthRegister />} />
         </Route>
 
         {/* Admin-view */}
@@ -68,6 +73,10 @@ const App = () => {
           <Route path="account" element={<ShoppingAccount />} />
         </Route>
 
+        {/* Un-auth Page */}
+        <Route path="/unauth-page" element={<UnauthPage />} />
+
+        {/* Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

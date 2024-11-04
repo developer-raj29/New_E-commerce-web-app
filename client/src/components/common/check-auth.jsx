@@ -1,8 +1,10 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
-const CheckAuth = ({ isAuthenticated, user, childern }) => {
+const CheckAuth = ({ isAuthenticated, user, children }) => {
   const location = useLocation();
+
+  console.log(location.pathname, ":", isAuthenticated);
 
   if (
     !isAuthenticated &&
@@ -42,7 +44,7 @@ const CheckAuth = ({ isAuthenticated, user, childern }) => {
     return <Navigate to="/admin/dashboard" />;
   }
 
-  return <>{childern}</>;
+  return <>{children}</>;
 };
 
 export default CheckAuth;
