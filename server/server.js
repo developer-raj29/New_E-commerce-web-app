@@ -8,11 +8,12 @@ connect();
 
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const authRouter  = require("./Routes/auth/auth-routes");
 
 app.use(
   cors({
-    origin: "http://localhost:5173/",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
       "Authorization",
@@ -24,8 +25,11 @@ app.use(
   })
 );
 
-// app.use(cookieParser());
+app.use(cookieParser());
+
 app.use(express.json());
+
+app.use("/api/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send(

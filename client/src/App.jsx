@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AdminLayout from "./components/admin-view/Layout";
@@ -16,14 +16,34 @@ import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth-page";
 import AuthRegister from "./pages/auth/register";
 import AuthLogIn from "./pages/auth/login";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./store/auth-slice";
+import { LoaderCircle } from "lucide-react";
 
 const App = () => {
-  const isAuthenticated = false;
-  const user = null;
+  // const isAuthenticated = false;
+  // const user = null;
   // {
   //   name: "Raj",
   //   role: "user",
   // };
+
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+
+  // const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if(isLoading) return (
+    <div>
+      Loading...
+      <LoaderCircle />
+    </div>
+  );
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -32,41 +52,21 @@ const App = () => {
       <Routes>
         {/* Authentication-View */}
         <Route
-          path="/auth"
-          element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-              <AuthLayout />
-            </CheckAuth>
-          }
-        >
+          path="/auth" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><AuthLayout /></CheckAuth>}>
           <Route path="login" element={<AuthLogIn />} />
           <Route path="register" element={<AuthRegister />} />
         </Route>
 
         {/* Admin-view */}
-        <Route
-          path="/admin"
-          element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-              <AdminLayout />
-            </CheckAuth>
-          }
-        >
+        <Route path="/admin" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><AdminLayout /></CheckAuth>}>
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="product" element={<AdminProduct />} />
-          <Route path="order" element={<AdminOrder />} />
-          <Route path="feature" element={<AdminFeature />} />
+          <Route path="products" element={<AdminProduct />} />
+          <Route path="orders" element={<AdminOrder />} />
+          <Route path="features" element={<AdminFeature />} />
         </Route>
 
         {/* Shopping-view*/}
-        <Route
-          path="/shop"
-          element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-              <ShoppingLayout />
-            </CheckAuth>
-          }
-        >
+        <Route path="/shop" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><ShoppingLayout /></CheckAuth>}>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="checkout" element={<ShoppingCheckout />} />
