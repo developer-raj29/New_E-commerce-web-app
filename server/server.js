@@ -9,6 +9,7 @@ connect();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const authRouter  = require("./Routes/auth/auth-routes");
+const adminProductsRouter = require('./Routes/admin/products-routes');
 
 app.use(
   cors({
@@ -30,6 +31,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
+
+app.use("/api/admin/products", adminProductsRouter);
 
 app.get("/", (req, res) => {
   res.send(

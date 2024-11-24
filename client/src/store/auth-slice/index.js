@@ -7,10 +7,7 @@ const initialState = {
   user: null,
 };
 
-export const registerUser = createAsyncThunk(
-  "/auth/register",
-
-  async (formData) => {
+export const registerUser = createAsyncThunk("/auth/register", async (formData) => {
     const response = await axios.post(
       "http://localhost:5000/api/auth/register",
       formData,
@@ -23,10 +20,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const loginUser = createAsyncThunk(
-  "/auth/login",
-
-  async (formData) => {
+export const loginUser = createAsyncThunk("/auth/login", async (formData) => {
     const response = await axios.post(
       "http://localhost:5000/api/auth/login",
       formData,
@@ -39,10 +33,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk(
-  "/auth/logout",
-
-  async () => {
+export const logoutUser = createAsyncThunk("/auth/logout", async () => {
     const response = await axios.post(
       "http://localhost:5000/api/auth/logout",
       {},
@@ -55,11 +46,7 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-
-export const checkAuth = createAsyncThunk(
-  "/auth/checkauth",
-
-  async () => {
+export const checkAuth = createAsyncThunk("/auth/checkauth", async () => {
     const response = await axios.get(
       "http://localhost:5000/api/auth/check-auth",
       {
@@ -74,7 +61,6 @@ export const checkAuth = createAsyncThunk(
     return response.data;
   }
 );
-
 
 const authSlice = createSlice({
   name: "auth",

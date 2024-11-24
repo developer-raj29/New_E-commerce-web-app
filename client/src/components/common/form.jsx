@@ -1,7 +1,6 @@
 import React from "react";
 import { Textarea } from "../ui/textarea";
-import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { SelectContent } from "@radix-ui/react-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -36,7 +35,7 @@ const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText})
             onValueChange={(value) =>
               setFormData({
                 ...formData,
-                [getControlItem.name]: value.target.value,
+                [getControlItem.name]: value,
               })
             }
             value={value}
