@@ -62,6 +62,7 @@ const AdminSidebar = ({ open, setOpen }) => {
 
   return (
     <Fragment>
+      
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left" className="w-64">
           <div className="flex flex-col h-full">
@@ -75,6 +76,7 @@ const AdminSidebar = ({ open, setOpen }) => {
           </div>
         </SheetContent>
       </Sheet>
+
       <aside className="hidden w-64 flex-col border-r bg-background p-6 lg:flex">
         <div
           onClick={() => navigate("/admin/dashboard")}
