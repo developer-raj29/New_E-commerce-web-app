@@ -37,36 +37,36 @@ const AdminProduct = () => {
 
   function onSubmit(event) {
     event.preventDefault();
-    dispatch(addNewProduct({
-      ...formData,
-      image: uploadImageUrl
-    })).then((data)=>{
-      console.log(data);
-      if(data?.payload?.success){
-        dispatch(fetchAllProduct());
-        setOpenCreateProductsDialog(false);
-        setImageFile(null);
-        setFormData(initialFormData);
-        toast({
-          title:'Product add Successfully'
-        })
-      }
-      else{
-        toast({
-          title : data?.payload?.message, 
-        })
-      }
-    }).catch((error)=>{
-      console.log(error);
-    })
-
+    dispatch(
+      addNewProduct({
+        ...formData,
+        image: uploadImageUrl,
+      })
+    )
+      .then((data) => {
+        console.log(data);
+        if (data?.payload?.success) {
+          dispatch(fetchAllProduct());
+          setOpenCreateProductsDialog(false);
+          setImageFile(null);
+          setFormData(initialFormData);
+          toast({
+            title: "Product add Successfully",
+          });
+        } else {
+          toast({
+            title: data?.payload?.message,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(fetchAllProduct());
-  },[dispatch])
-
-
+  }, [dispatch]);
 
   console.log(productList, ": productList");
 
