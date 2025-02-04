@@ -8,8 +8,8 @@ connect();
 
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const authRouter  = require("./Routes/auth/auth-routes");
-const adminProductsRouter = require('./Routes/admin/products-routes');
+const authRouter = require("./Routes/auth/auth-routes");
+const adminProductsRouter = require("./Routes/admin/products-routes");
 
 app.use(
   cors({

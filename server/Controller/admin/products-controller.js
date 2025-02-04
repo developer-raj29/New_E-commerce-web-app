@@ -1,25 +1,6 @@
 const { imageUploadUtil } = require("../../Config/Cloudinary");
 const Product = require("../../Model/Product");
 
-// const handleImageUpload = async (req, res) => {
-//   try {
-//     const b64 = Buffer.from(req.file.buffer).toString("base64");
-//     const url = "date:" + req.file.mimetype + ":base64," + b64;
-//     const result = await imageUploadUtil(url);
-
-//     res.status(201).json({
-//       success: true,
-//       result,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Error occured",
-//     });
-//   }
-// };
-
 const handleImageUpload = async (req, res) => {
   try {
     const b64 = Buffer.from(req.file.buffer).toString("base64");
@@ -86,6 +67,7 @@ const addProduct = async (req, res) => {
 
     res.status(201).json({
       success: true,
+      message: "Product add Successfully",
       data: newlyCreatedProduct,
     });
   } catch (error) {

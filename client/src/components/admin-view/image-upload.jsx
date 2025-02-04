@@ -6,15 +6,7 @@ import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import axios from "axios";
 
-const ProductImageUpload = ({
-  imageFile,
-  setImageFile,
-  uploadImageUrl,
-  setUploadImageUrl,
-  isEditMode,
-  imageLoadingState,
-  setImageLoadingState,
-}) => {
+const ProductImageUpload = ({ imageFile, setImageFile, uploadImageUrl, setUploadImageUrl, isEditMode, imageLoadingState, setImageLoadingState }) => {
   const inputRef = useRef(null);
 
   const handleImageFileChange = (event) => {

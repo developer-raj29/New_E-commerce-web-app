@@ -1,4 +1,5 @@
 import ProductImageUpload from "@/components/admin-view/image-upload";
+import AdminProductTile from "@/components/admin-view/product-tile";
 import CommonForm from "@/components/common/form";
 import { addProductFormElements } from "@/components/config";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { toast } from "@/hooks/use-toast";
-import { addNewProduct, fetchAllProduct } from "@/store/admin/product-slice";
+import { addNewProduct, fetchAllProducts } from "@/store/admin/product-slice";
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -46,17 +47,13 @@ const AdminProduct = () => {
       .then((data) => {
         console.log(data);
         if (data?.payload?.success) {
-          dispatch(fetchAllProduct());
+          dispatch(fetchAllProducts());
           setOpenCreateProductsDialog(false);
           setImageFile(null);
           setFormData(initialFormData);
-          toast({
-            title: "Product add Successfully",
-          });
+          toast({ title: data?.payload?.message });
         } else {
-          toast({
-            title: data?.payload?.message,
-          });
+          toast({ title: data?.payload?.message });
         }
       })
       .catch((error) => {
@@ -65,9 +62,10 @@ const AdminProduct = () => {
   }
 
   useEffect(() => {
-    dispatch(fetchAllProduct());
+    dispatch(fetchAllProducts());
   }, [dispatch]);
 
+  console.log("formData: ", formData);
   console.log(productList, ": productList");
 
   return (
@@ -78,38 +76,43 @@ const AdminProduct = () => {
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-        <Sheet
-          open={openCreateProductsDialog}
-          onOpenChange={() => setOpenCreateProductsDialog(false)}
-        >
-          <SheetContent side="right" className="overflow-auto">
-            <SheetHeader className="border-b">
-              <SheetTitle className="flex gap-2 mt-5 mb-5">
-                Add New Product
-              </SheetTitle>
-            </SheetHeader>
-
-            <ProductImageUpload
-              imageFile={imageFile}
-              setImageFile={setImageFile}
-              uploadImageUrl={uploadImageUrl}
-              setUploadImageUrl={setUploadImageUrl}
-              imageLoadingState={imageLoadingState}
-              setImageLoadingState={setImageLoadingState}
-            />
-
-            <div className="py-6">
-              <CommonForm
-                onSubmit={onSubmit}
-                formData={formData}
-                setFormData={setFormData}
-                buttonText="Add"
-                formControls={addProductFormElements}
-              />
-            </div>
-          </SheetContent>
-        </Sheet>
+        {productList && productList.length > 0
+          ? productList.map((productItem, index) => (
+              <AdminProductTile product={productItem} index={index} />
+            ))
+          : null}
       </div>
+      <Sheet
+        open={openCreateProductsDialog}
+        onOpenChange={() => setOpenCreateProductsDialog(false)}
+      >
+        <SheetContent side="right" className="overflow-auto">
+          <SheetHeader className="border-b">
+            <SheetTitle className="flex gap-2 mt-5 mb-5">
+              Add New Product
+            </SheetTitle>
+          </SheetHeader>
+
+          <ProductImageUpload
+            imageFile={imageFile}
+            setImageFile={setImageFile}
+            uploadImageUrl={uploadImageUrl}
+            setUploadImageUrl={setUploadImageUrl}
+            imageLoadingState={imageLoadingState}
+            setImageLoadingState={setImageLoadingState}
+          />
+
+          <div className="py-6">
+            <CommonForm
+              onSubmit={onSubmit}
+              formData={formData}
+              setFormData={setFormData}
+              buttonText="Add"
+              formControls={addProductFormElements}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </Fragment>
   );
 };
