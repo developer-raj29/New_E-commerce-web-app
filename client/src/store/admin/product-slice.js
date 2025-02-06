@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "@/components/config";
 
 const initialState = {
   isLoading: false,
@@ -7,11 +8,8 @@ const initialState = {
   error: null,
 };
 
-// const apiUrl = import.meta.env.VITE_API_URL;
-const apiUrl = "http://localhost:5000/api";
-
 export const addNewProduct = createAsyncThunk("/products/addnewProduct", async (formData) => {
-    const result = await axios.post(`${apiUrl}/admin/products/add`,
+    const result = await axios.post(`${BASE_URL}/admin/products/add`,
       formData,
       {
         headers: {
@@ -19,19 +17,19 @@ export const addNewProduct = createAsyncThunk("/products/addnewProduct", async (
         },
       }
     );
-    return result;
+    return result?.data;
   }
 );
 
 export const fetchAllProducts = createAsyncThunk("/products/fetchAllProducts", async () => {
-    const result = await axios.get(`${apiUrl}/admin/products/allProducts`);
+    const result = await axios.get(`${BASE_URL}/admin/products/allProducts`);
 
     return result?.data;
   }
 );
 
-export const updateProduct = createAsyncThunk("/products/updateProduct", async (id, formData) => {
-  const result = await axios.put(`${apiUrl}/admin/products/edit/${id}`,
+export const editProduct = createAsyncThunk("/products/editProduct", async ({ id, formData }) => {
+    const result = await axios.put(`${BASE_URL}/admin/products/edit/${id}`,
       formData,
       {
         headers: {
@@ -39,19 +37,30 @@ export const updateProduct = createAsyncThunk("/products/updateProduct", async (
         },
       }
     );
+
     return result?.data;
   }
 );
 
-export const deleteProduct = createAsyncThunk("/products/deleteProduct", async (id) => {
-    const result = await axios.delete(`${apiUrl}/admin/products/delete/${id}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+export const deleteProduct = createAsyncThunk("/products/deleteProduct", async (_id) => {
+    try {
+      console.log("Deleting Product with ID:", _id);
+
+      const response = await axios.delete(
+        `${BASE_URL}/admin/products/delete/${_id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Delete Product Response:", response.data);
+      return response.data; // ✅ Return the API response
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      // return rejectWithValue(error.response?.data || "Something went wrong");
+    }
   }
 );
 
@@ -73,44 +82,6 @@ const AdminProductsSlice = createSlice({
         state.isLoading = false;
         state.productList = [];
       });
-    // .addCase(addNewProduct.pending, (state) => {
-    //   state.isLoading = true;
-    // })
-    // .addCase(addNewProduct.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.productList = action.payload.data;
-    // })
-    // .addCase(addNewProduct.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.user = null;
-    //   state.isAuthenticated = false;
-    // })
-    // .addCase(updateProduct.pending, (state) => {
-    //   state.isLoading = true;
-    // })
-    // .addCase(updateProduct.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.user = null;
-    //   state.isAuthenticated = false;
-    // })
-    // .addCase(updateProduct.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.user = null;
-    //   state.isAuthenticated = false;
-    // })
-    // .addCase(deleteProduct.pending, (state) => {
-    //   state.isLoading = true;
-    // })
-    // .addCase(deleteProduct.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.user = null;
-    //   state.isAuthenticated = false;
-    // })
-    // .addCase(deleteProduct.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.user = null;
-    //   state.isAuthenticated = false;
-    // });
   },
 });
 

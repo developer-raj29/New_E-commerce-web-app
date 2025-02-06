@@ -1,16 +1,20 @@
-import React from "react";
-import { Textarea } from "../ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 
-const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText}) => {
-
+const CommonForm = ({ formControls, formData, setFormData, onSubmit, buttonText, isBtnDisabled }) => {
+  
   function renderInputsByComponentType(getControlItem) {
     let element = null;
-
-    const value = formData[getControlItem.name] || '';
+    const value = formData[getControlItem.name] || "";
 
     switch (getControlItem.componentType) {
       case "input":
@@ -21,14 +25,16 @@ const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText})
             id={getControlItem.name}
             type={getControlItem.type}
             value={value}
-            onChange={(event)=> setFormData({
-                ...formData, [getControlItem.name] : event.target.value,
-            })
-           }
+            onChange={(event) =>
+              setFormData({
+                ...formData,
+                [getControlItem.name]: event.target.value,
+              })
+            }
           />
         );
-        break;
 
+        break;
       case "select":
         element = (
           <Select
@@ -41,9 +47,8 @@ const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText})
             value={value}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={getControlItem.placeholder} />
+              <SelectValue placeholder={getControlItem.label} />
             </SelectTrigger>
-
             <SelectContent>
               {getControlItem.options && getControlItem.options.length > 0
                 ? getControlItem.options.map((optionItem) => (
@@ -55,8 +60,8 @@ const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText})
             </SelectContent>
           </Select>
         );
-        break;
 
+        break;
       case "textarea":
         element = (
           <Textarea
@@ -72,6 +77,7 @@ const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText})
             }
           />
         );
+
         break;
 
       default:
@@ -81,6 +87,7 @@ const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText})
             placeholder={getControlItem.placeholder}
             id={getControlItem.name}
             type={getControlItem.type}
+            value={value}
             onChange={(event) =>
               setFormData({
                 ...formData,
@@ -94,6 +101,7 @@ const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText})
 
     return element;
   }
+
   return (
     <form onSubmit={onSubmit}>
       <div className="flex flex-col gap-3">
@@ -104,8 +112,9 @@ const CommonForm = ({formControls, formData, setFormData, onSubmit, buttonText})
           </div>
         ))}
       </div>
-
-      <Button type="submit" className="mt-2 w-full text-white">{buttonText}</Button>
+      <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full">
+        {buttonText || "Submit"}
+      </Button>
     </form>
   );
 };

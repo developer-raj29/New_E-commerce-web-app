@@ -6,7 +6,15 @@ import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import axios from "axios";
 
-const ProductImageUpload = ({ imageFile, setImageFile, uploadImageUrl, setUploadImageUrl, isEditMode, imageLoadingState, setImageLoadingState }) => {
+const ProductImageUpload = ({
+  imageFile,
+  setImageFile,
+  uploadImageUrl,
+  setUploadImageUrl,
+  isEditMode,
+  imageLoadingState,
+  setImageLoadingState,
+}) => {
   const inputRef = useRef(null);
 
   const handleImageFileChange = (event) => {
@@ -37,24 +45,33 @@ const ProductImageUpload = ({ imageFile, setImageFile, uploadImageUrl, setUpload
     setImageLoadingState(true);
     const data = new FormData();
     data.append("my_file", imageFile);
-    const response = await axios.post("http://localhost:5000/api/admin/products/upload-image", data);
-    
+    const response = await axios.post(
+      "http://localhost:5000/api/admin/products/upload-image",
+      data
+    );
+
     console.log(response, "response");
 
     if (response?.data?.success) {
       setUploadImageUrl(response.data.result.url);
       setImageLoadingState(false);
     }
-  }
+  };
 
   useEffect(() => {
-    if (imageFile !== null) uploadImageCloudinary()
+    if (imageFile !== null) uploadImageCloudinary();
   }, [imageFile]);
 
   return (
     <div className="w-full max-w-md mx-auto mt-4">
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
-      <div onDragOver={handleDragOver} onDrop={handleDrop} className="border-2 border-dashed rounded-lg p-4">
+      <div
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        className={`${
+          isEditMode ? "opacity-60" : ""
+        } border-2 border-dashed rounded-lg p-4`}
+      >
         <Input
           id="image-upload"
           type="file"
@@ -66,7 +83,9 @@ const ProductImageUpload = ({ imageFile, setImageFile, uploadImageUrl, setUpload
         {!imageFile ? (
           <Label
             htmlFor="image-upload"
-            className=" flex flex-col items-center justify-center h-32 cursor-pointer"
+            className={`${
+              isEditMode ? "cursor-not-allowed" : "cursor-pointer"
+            } flex flex-col items-center justify-center h-32 cursor-pointer`}
           >
             <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
             <span>Drag & Drop or click to upload image</span>
