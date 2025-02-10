@@ -1,28 +1,32 @@
-import React, { useEffect, useRef } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
-import { Skeleton } from "../ui/skeleton";
 import axios from "axios";
+import { Skeleton } from "../ui/skeleton";
 
 const ProductImageUpload = ({
   imageFile,
   setImageFile,
-  uploadImageUrl,
-  setUploadImageUrl,
-  isEditMode,
   imageLoadingState,
+  uploadedImageUrl,
+  setUploadedImageUrl,
   setImageLoadingState,
+  isEditMode,
+  isCustomStyling = false,
 }) => {
   const inputRef = useRef(null);
 
-  const handleImageFileChange = (event) => {
-    console.log(event.target.files);
+  console.log(isEditMode, "isEditMode");
+
+  function handleImageFileChange(event) {
+    console.log(event.target.files, "event.target.files");
     const selectedFile = event.target.files?.[0];
     console.log(selectedFile);
+
     if (selectedFile) setImageFile(selectedFile);
-  };
+  }
 
   function handleDragOver(event) {
     event.preventDefault();
@@ -41,7 +45,7 @@ const ProductImageUpload = ({
     }
   }
 
-  const uploadImageCloudinary = async () => {
+  async function uploadImageToCloudinary() {
     setImageLoadingState(true);
     const data = new FormData();
     data.append("my_file", imageFile);
@@ -49,21 +53,22 @@ const ProductImageUpload = ({
       "http://localhost:5000/api/admin/products/upload-image",
       data
     );
-
     console.log(response, "response");
 
     if (response?.data?.success) {
-      setUploadImageUrl(response.data.result.url);
+      setUploadedImageUrl(response.data.result.url);
       setImageLoadingState(false);
     }
-  };
+  }
 
   useEffect(() => {
-    if (imageFile !== null) uploadImageCloudinary();
+    if (imageFile !== null) uploadImageToCloudinary();
   }, [imageFile]);
 
   return (
-    <div className="w-full max-w-md mx-auto mt-4">
+    <div
+      className={`w-full  mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}
+    >
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
       <div
         onDragOver={handleDragOver}
@@ -84,11 +89,11 @@ const ProductImageUpload = ({
           <Label
             htmlFor="image-upload"
             className={`${
-              isEditMode ? "cursor-not-allowed" : "cursor-pointer"
+              isEditMode ? "cursor-not-allowed" : ""
             } flex flex-col items-center justify-center h-32 cursor-pointer`}
           >
             <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
-            <span>Drag & Drop or click to upload image</span>
+            <span>Drag & drop or click to upload image</span>
           </Label>
         ) : imageLoadingState ? (
           <Skeleton className="h-10 bg-gray-100" />

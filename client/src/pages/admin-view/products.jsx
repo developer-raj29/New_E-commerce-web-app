@@ -9,14 +9,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useToast } from "@/components/ui/use-toast";
-import { addProductFormElements } from "@/components/config";
+import { addProductFormElements } from "@/config";
 import {
   addNewProduct,
   deleteProduct,
   editProduct,
   fetchAllProducts,
-} from "@/store/admin/product-slice";
-
+} from "@/store/admin/products-slice";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -37,7 +36,7 @@ const AdminProducts = () => {
     useState(false);
   const [formData, setFormData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
-  const [uploadImageUrl, setUploadImageUrl] = useState("");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const [currentEditedId, setCurrentEditedId] = useState(null);
 
@@ -67,7 +66,7 @@ const AdminProducts = () => {
       : dispatch(
           addNewProduct({
             ...formData,
-            image: uploadImageUrl,
+            image: uploadedImageUrl,
           })
         ).then((data) => {
           if (data?.payload?.success) {
@@ -102,6 +101,7 @@ const AdminProducts = () => {
   }, [dispatch]);
 
   console.log(formData, "productList");
+  // console.log(productList, "productList");
 
   return (
     <Fragment>
@@ -114,6 +114,7 @@ const AdminProducts = () => {
         {productList && productList.length > 0
           ? productList.map((productItem) => (
               <AdminProductTile
+                key={productItem._id}
                 setFormData={setFormData}
                 setOpenCreateProductsDialog={setOpenCreateProductsDialog}
                 setCurrentEditedId={setCurrentEditedId}
@@ -140,8 +141,8 @@ const AdminProducts = () => {
           <ProductImageUpload
             imageFile={imageFile}
             setImageFile={setImageFile}
-            uploadImageUrl={uploadImageUrl}
-            setUploadImageUrl={setUploadImageUrl}
+            uploadedImageUrl={uploadedImageUrl}
+            setUploadedImageUrl={setUploadedImageUrl}
             setImageLoadingState={setImageLoadingState}
             imageLoadingState={imageLoadingState}
             isEditMode={currentEditedId !== null}

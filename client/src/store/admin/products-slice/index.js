@@ -1,15 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL } from "@/components/config";
+import { BASE_URL } from "@/config";
 
 const initialState = {
   isLoading: false,
   productList: [],
-  error: null,
 };
 
-export const addNewProduct = createAsyncThunk("/products/addnewProduct", async (formData) => {
-    const result = await axios.post(`${BASE_URL}/admin/products/add`,
+export const addNewProduct = createAsyncThunk(
+  "/products/addnewproduct",
+  async (formData) => {
+    const result = await axios.post(
+      `${BASE_URL}/api/admin/products/add`,
       formData,
       {
         headers: {
@@ -17,19 +19,22 @@ export const addNewProduct = createAsyncThunk("/products/addnewProduct", async (
         },
       }
     );
+
     return result?.data;
   }
 );
 
 export const fetchAllProducts = createAsyncThunk("/products/fetchAllProducts", async () => {
-    const result = await axios.get(`${BASE_URL}/admin/products/allProducts`);
-
+    const result = await axios.get(`${BASE_URL}/api/admin/products/allProducts`);
     return result?.data;
   }
 );
 
-export const editProduct = createAsyncThunk("/products/editProduct", async ({ id, formData }) => {
-    const result = await axios.put(`${BASE_URL}/admin/products/edit/${id}`,
+export const editProduct = createAsyncThunk(
+  "/products/editProduct",
+  async ({ id, formData }) => {
+    const result = await axios.put(
+      `${BASE_URL}/api/admin/products/edit/${id}`,
       formData,
       {
         headers: {
@@ -42,25 +47,14 @@ export const editProduct = createAsyncThunk("/products/editProduct", async ({ id
   }
 );
 
-export const deleteProduct = createAsyncThunk("/products/deleteProduct", async (_id) => {
-    try {
-      console.log("Deleting Product with ID:", _id);
+export const deleteProduct = createAsyncThunk(
+  "/products/deleteProduct",
+  async (id) => {
+    const result = await axios.delete(
+      `${BASE_URL}/api/admin/products/delete/${id}`
+    );
 
-      const response = await axios.delete(
-        `${BASE_URL}/admin/products/delete/${_id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("Delete Product Response:", response.data);
-      return response.data; // ✅ Return the API response
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      // return rejectWithValue(error.response?.data || "Something went wrong");
-    }
+    return result?.data;
   }
 );
 
@@ -74,7 +68,6 @@ const AdminProductsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.isLoading = false;
         state.productList = action.payload.data;
       })

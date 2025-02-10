@@ -1,17 +1,17 @@
 import CommonForm from "@/components/common/form";
-import { loginFormControls } from "@/components/config";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
+import { loginFormControls } from "@/config";
 import { loginUser } from "@/store/auth-slice";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 const initialState = {
-  email: "dummy@gmail.com",
-  password: "12345678",
+  email: "",
+  password: "",
 };
 
-const AuthLogIn = () => {
+const AuthLogin = () => {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -20,7 +20,6 @@ const AuthLogIn = () => {
     event.preventDefault();
 
     dispatch(loginUser(formData)).then((data) => {
-      // console.log(data);
       if (data?.payload?.success) {
         toast({
           title: data?.payload?.message,
@@ -38,9 +37,8 @@ const AuthLogIn = () => {
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Sign-In to your account
+          Sign in to your account
         </h1>
-
         <p className="mt-2">
           Don't have an account
           <Link
@@ -51,7 +49,6 @@ const AuthLogIn = () => {
           </Link>
         </p>
       </div>
-
       <CommonForm
         formControls={loginFormControls}
         buttonText={"Sign In"}
@@ -63,4 +60,4 @@ const AuthLogIn = () => {
   );
 };
 
-export default AuthLogIn;
+export default AuthLogin;
