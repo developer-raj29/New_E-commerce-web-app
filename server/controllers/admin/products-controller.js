@@ -1,5 +1,5 @@
-const { imageUploadUtil } = require("../../Config/Cloudinary");
-const Product = require("../../Model/Product");
+const { imageUploadUtil } = require("../../config/Cloudinary");
+const Product = require("../../models/Product");
 const mongoose = require("mongoose");
 
 const handleImageUpload = async (req, res) => {

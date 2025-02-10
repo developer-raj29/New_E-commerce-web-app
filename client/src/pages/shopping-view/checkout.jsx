@@ -82,11 +82,18 @@ const ShoppingCheckout = () => {
     };
 
     dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "sangam");
+      console.log(data, "data");
       if (data?.payload?.success) {
         setIsPaymemntStart(true);
+        toast({
+          title: "Your order is proceed...",
+        });
       } else {
         setIsPaymemntStart(false);
+        toast({
+          title: "Some error on server...",
+          variant: "destructive",
+        });
       }
     });
   }

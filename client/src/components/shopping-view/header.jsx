@@ -85,7 +85,7 @@ function HeaderRightContent() {
     }
   }, [dispatch, user?.id]);
 
-  console.log(cartItems, "sangam");
+  console.log(user?.userName, "UserName");
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
@@ -116,11 +116,13 @@ function HeaderRightContent() {
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
             <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.userName ? user.userName[0].toUpperCase() : "?"}
+              {user?.userName ? user.userName[0].toUpperCase() : null}
+              {/* {user.userName[0].toUpperCase()} */}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="right" className="w-56">
+
+        <DropdownMenuContent side="bottom" className="w-60 mt-2 mx-3">
           <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => navigate("/shop/account")}>

@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-const { upload } = require("../../Config/Cloudinary");
+const { upload } = require("../../config/Cloudinary");
 const {
   handleImageUpload,
   addProduct,
   updateProduct,
   deleteProduct,
   fetchAllProducts,
-} = require("../../Controller/admin/products-controller");
+} = require("../../controllers/admin/products-controller");
 
 router.post("/upload-image", upload.single("my_file"), handleImageUpload);
 router.post("/add", addProduct);

@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../../Model/User");
+const User = require("../../models/User");
 
 // Registration Controller
 const registerUser = async (req, res) => {
@@ -70,6 +70,7 @@ const loginUser = async (req, res) => {
         id: checkUser._id,
         role: checkUser.role,
         email: checkUser.email,
+        userName: checkUser.userName,
       },
       "CLIENT_SECRET_KEY",
       { expiresIn: "60m" }
@@ -81,6 +82,7 @@ const loginUser = async (req, res) => {
       success: true,
       message: "Logged In Successfully",
       user: {
+        userName: checkUser.userName,
         email: checkUser.email,
         role: checkUser.role,
         id: checkUser._id,
