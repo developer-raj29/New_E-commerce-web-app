@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 const initialState = {
-  email: "",
-  password: "",
+  email: "dummy@gmail.com",
+  password: "12345678",
 };
 
 const AuthLogin = () => {
