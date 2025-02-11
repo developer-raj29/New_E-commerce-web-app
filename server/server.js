@@ -23,7 +23,9 @@ const commonFeatureRouter = require("./routes/common/feature.routes");
 
 app.use(
   cors({
-    origin: "https://ecom-web-app-frontend.vercel.app",
+    origin: [
+      "https://ecom-web-app-frontend.vercel.app" || "http://localhost:5173",
+    ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
