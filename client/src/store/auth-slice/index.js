@@ -52,10 +52,7 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-export const checkAuth = createAsyncThunk(
-  "/auth/checkauth",
-
-  async () => {
+export const checkAuth = createAsyncThunk("/auth/checkauth", async () => {
     const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
       withCredentials: true,
       headers: {
