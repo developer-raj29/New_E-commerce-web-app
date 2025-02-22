@@ -27,7 +27,7 @@ const AdminDashboard = () => {
     dispatch(getFeatureImages());
   }, [dispatch]);
 
-  console.log(featureImageList, "featureImageList");
+  // console.log(featureImageList, "featureImageList");
 
   return (
     <div>

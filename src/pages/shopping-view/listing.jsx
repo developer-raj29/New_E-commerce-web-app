@@ -32,7 +32,7 @@ const createSearchParamsHelper = (filterParams) => {
     }
   }
 
-  console.log(queryParams, "queryParams");
+  // console.log(queryParams, "queryParams");
 
   return queryParams.join("&");
 };
@@ -79,12 +79,12 @@ const ShoppingListing = () => {
   }
 
   function handleGetProductDetails(getCurrentProductId) {
-    // console.log(getCurrentProductId);
+    // // console.log(getCurrentProductId);
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    console.log(cartItems);
+    // console.log(cartItems);
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -143,7 +143,7 @@ const ShoppingListing = () => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
-  // console.log(productList, "productList");
+  // // console.log(productList, "productList");
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">

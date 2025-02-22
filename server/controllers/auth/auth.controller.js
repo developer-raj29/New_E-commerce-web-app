@@ -82,6 +82,7 @@ const loginUser = async (req, res) => {
     res.cookie("token", token, { httpOnly: true, secure: false }).json({
       success: true,
       message: "Logged In Successfully",
+      token: token,
       user: {
         userName: checkUser.userName,
         email: checkUser.email,
@@ -107,22 +108,39 @@ const logoutUser = (req, res) => {
 
 //auth middleware
 const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.token;
-  console.log("token: ", token);
-  if (!token)
-    return res.status(401).json({
-      success: false,
-      message: "Unauthorised user!",
-    });
-
   try {
-    const decoded = jwt.verify(token, "CLIENT_SECRET_KEY");
-    req.user = decoded;
+    const token =
+      req.cookies.token ||
+      req.body.token ||
+      req.header("Authorization").replace("Bearer ");
+    console.log("Token: ", token);
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized user! No token provided.",
+      });
+    }
+
+    try {
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET || "CLIENT_SECRET_KEY"
+      ); // Use env variable
+      req.user = decoded;
+    } catch (err) {
+      // varification issue message
+      res.status(401).json({
+        success: false,
+        message: "Invalid Token",
+        error: err.message,
+      });
+    }
     next();
   } catch (error) {
-    res.status(500).json({
+    return res.status(401).json({
       success: false,
-      message: "Unauthorised user!",
+      message: "Unauthorized user! Invalid token.",
     });
   }
 };

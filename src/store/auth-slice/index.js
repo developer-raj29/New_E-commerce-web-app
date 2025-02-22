@@ -32,6 +32,8 @@ export const loginUser = createAsyncThunk(
       withCredentials: true,
     });
 
+    // console.log("response.data Login : ", response.data);
+
     return response.data;
   }
 );
@@ -53,17 +55,15 @@ export const logoutUser = createAsyncThunk(
 );
 
 export const checkAuth = createAsyncThunk("/auth/checkauth", async () => {
-    const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
-      withCredentials: true,
-      headers: {
-        "Cache-Control":
-          "no-store, no-cache, must-revalidate, proxy-revalidate",
-      },
-    });
+  const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
+    withCredentials: true,
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+  });
 
-    return response.data;
-  }
-);
+  return response.data;
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -90,7 +90,7 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log(action);
+        // console.log(action);
 
         state.isLoading = false;
         state.user = action.payload.success ? action.payload.user : null;

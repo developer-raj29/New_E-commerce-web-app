@@ -5,7 +5,7 @@ import { Checkbox } from "../ui/checkbox";
 import { Separator } from "../ui/separator";
 
 const ProductFilter = ({ filters, handleFilter }) => {
-  console.log("filterOptions: ", filterOptions);
+  // console.log("filterOptions: ", filterOptions);
 
   return (
     <div className="bg-background rounded-lg shadow-sm">

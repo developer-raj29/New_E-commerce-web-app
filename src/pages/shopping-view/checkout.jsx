@@ -17,7 +17,7 @@ const ShoppingCheckout = () => {
   const dispatch = useDispatch();
   const { toast } = useToast();
 
-  console.log(currentSelectedAddress, "cartItems");
+  // console.log(currentSelectedAddress, "cartItems");
 
   const totalCartAmount =
     cartItems && cartItems.items && cartItems.items.length > 0
@@ -82,7 +82,7 @@ const ShoppingCheckout = () => {
     };
 
     dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "data");
+      // console.log(data, "data");
       if (data?.payload?.success) {
         setIsPaymemntStart(true);
         toast({
