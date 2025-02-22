@@ -30,8 +30,10 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkAuth());
-  }, [dispatch]);
+    if (!isAuthenticated) {
+      dispatch(checkAuth());
+    }
+  }, [dispatch, isAuthenticated]);
 
   if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
 
