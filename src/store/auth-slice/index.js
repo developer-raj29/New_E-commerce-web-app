@@ -32,7 +32,7 @@ export const loginUser = createAsyncThunk(
       withCredentials: true,
     });
 
-    // console.log("response.data Login : ", response.data);
+    console.log("response.data Login : ", response.data);
 
     return response.data;
   }
