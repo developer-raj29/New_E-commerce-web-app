@@ -40,7 +40,7 @@ const commonFeatureRouter = require("./routes/common/feature.routes");
 // );
 
 const allowedOrigins = [
-  "https://new-e-commerce-web-app.vercel.app",
+  "https://e-commerce-vitereact.vercel.app",
   "http://localhost:5173",
 ];
 
