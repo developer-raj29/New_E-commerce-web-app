@@ -92,6 +92,11 @@ const fetchCartItems = async (req, res) => {
       quantity: item.quantity,
     }));
 
+    res.setHeader("Access-Control-Allow-Origin", "https://e-commerce-vitereact.vercel.app");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+
     res.status(200).json({
       success: true,
       data: {
