@@ -1,5 +1,5 @@
-export const BASE_URL = "https://ecom-appbackend.vercel.app";
-// export const BASE_URL = "http://localhost:2000";
+// export const BASE_URL = "https://ecom-appbackend.vercel.app";
+export const BASE_URL = "http://localhost:2000";
 //  export const BASE_URL =
 //    "https://ecom-appbackend.vercel.app" || "http://localhost:2000";
 

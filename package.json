@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "server": "cd server && npm run dev",
+    "dev": "concurrently --kill-others-on-fail -n \"client,server\" -c \"bgBlue,bgRed\" \"vite\" \"cd server && npm run dev\"",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -24,6 +25,7 @@
     "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "concurrently": "^9.1.2",
     "lucide-react": "^0.429.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
