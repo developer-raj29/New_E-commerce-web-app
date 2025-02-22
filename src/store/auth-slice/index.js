@@ -34,6 +34,8 @@ export const loginUser = createAsyncThunk(
 
     console.log("response.data Login : ", response.data);
 
+    localStorage.setItem("token", JSON.stringify(response.data.token));
+    localStorage.setItem("user", JSON.stringify(response.data.user));
     return response.data;
   }
 );
@@ -54,10 +56,11 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-export const checkAuth = createAsyncThunk("/auth/checkauth", async () => {
+export const checkAuth = createAsyncThunk("/auth/checkauth", async (token) => {
   const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
     withCredentials: true,
     headers: {
+      Authorization: `Bearer ${token}`,
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     },
   });

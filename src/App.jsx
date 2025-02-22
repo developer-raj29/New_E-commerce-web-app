@@ -30,10 +30,16 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      dispatch(checkAuth());
-    }
-  }, [dispatch, isAuthenticated]);
+     if (localStorage.getItem("token")) {
+       const token = JSON.parse(localStorage.getItem("token"));
+       dispatch(checkAuth(token));
+     }
+    // if (!isAuthenticated) {
+    //   dispatch(checkAuth());
+    // }
+    console.log("isAuthenticated: ", isAuthenticated);
+  }, []);
+
 
   if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
 

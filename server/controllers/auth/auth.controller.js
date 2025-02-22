@@ -114,6 +114,7 @@ const authMiddleware = async (req, res, next) => {
       req.body.token ||
       req.header("Authorization").replace("Bearer ");
     console.log("Token: ", token);
+    console.log("header: ", req.header("Authorization").replace("Bearer "));
 
     if (!token) {
       return res.status(401).json({
