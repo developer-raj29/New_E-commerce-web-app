@@ -1,6 +1,5 @@
-export const BASE_URL = "https://ecom-backend-application.onrender.com";
-
-// export const BASE_URL = "http://localhost:2000";
+export const BASE_URL =
+  "https://ecom-backend-application.onrender.com" || "http://localhost:2000";
 
 export const registerFormControls = [
   {
