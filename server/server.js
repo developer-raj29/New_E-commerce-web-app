@@ -21,12 +21,38 @@ const shopReviewRouter = require("./routes/shop/product.review.routes");
 
 const commonFeatureRouter = require("./routes/common/feature.routes");
 
+// app.use(
+//   cors({
+//     origin: [
+//       "https://new-e-commerce-web-app.vercel.app",
+//       "http://localhost:5173",
+//     ],
+//     methods: ["GET", "POST", "DELETE", "PUT"],
+//     allowedHeaders: [
+//       "Content-Type",
+//       "Authorization",
+//       "Cache-Control",
+//       "Expires",
+//       "Pragma",
+//     ],
+//     credentials: true,
+//   })
+// );
+
+const allowedOrigins = [
+  "https://new-e-commerce-web-app.vercel.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin:
-      // "https://ecom-web-app-frontend.vercel.app",
-      "http://localhost:5173",
-    // "https://ecom-web-app-frontend.vercel.app" || "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
