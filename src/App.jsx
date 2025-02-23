@@ -30,16 +30,10 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-     if (localStorage.getItem("token")) {
-       const token = JSON.parse(localStorage.getItem("token"));
-       dispatch(checkAuth(token));
-     }
-    // if (!isAuthenticated) {
-    //   dispatch(checkAuth());
-    // }
-    console.log("isAuthenticated: ", isAuthenticated);
-  }, []);
-
+    if (!isAuthenticated) {
+      dispatch(checkAuth());
+    }
+  }, [isAuthenticated, dispatch]);
 
   if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
 
@@ -48,21 +42,50 @@ const App = () => {
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
-        <Route path="/" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}></CheckAuth>}/>
-        
-        <Route path="/auth" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><AuthLayout /></CheckAuth>}>
+        <Route
+          path="/"
+          element={
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+            ></CheckAuth>
+          }
+        />
+
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
         </Route>
-        
-        <Route path="/admin" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><AdminLayout /></CheckAuth>}>
+
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
         </Route>
 
-        <Route path="/shop" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><ShoppingLayout /></CheckAuth>}>
+        <Route
+          path="/shop"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <ShoppingLayout />
+            </CheckAuth>
+          }
+        >
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="checkout" element={<ShoppingCheckout />} />

@@ -39,21 +39,13 @@ const commonFeatureRouter = require("./routes/common/feature.routes");
 //   })
 // );
 
-const allowedOrigins = [
-  "https://e-commerce-vitereact.vercel.app",
-  "http://localhost:5173",
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    origin: [
+      "https://e-commerce-vitereact.vercel.app",
+      "http://localhost:5173",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: [
       "Content-Type",
       "Authorization",
@@ -61,7 +53,7 @@ app.use(
       "Expires",
       "Pragma",
     ],
-    credentials: true,
+    credentials: true, // Allows cookies to be sent
   })
 );
 

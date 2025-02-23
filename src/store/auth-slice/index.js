@@ -56,12 +56,17 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-export const checkAuth = createAsyncThunk("/auth/checkauth", async (token) => {
+export const checkAuth = createAsyncThunk("/auth/checkauth", async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No authentication token found.");
+  }
   const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
     withCredentials: true,
     headers: {
-      Authorization: `Bearer ${token}`,
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Authorization: `Bearer ${token}`,
     },
   });
 
