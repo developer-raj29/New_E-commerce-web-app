@@ -8,14 +8,9 @@ const initialState = {
   user: null,
 };
 
-export const registerUser = createAsyncThunk(
-  "/auth/register",
-
-  async (formData) => {
-    const response = await axios.post(
-      `${BASE_URL}/api/auth/register`,
-      formData,
-      {
+export const registerUser = createAsyncThunk("/auth/register", async (formData) => {
+    const response = await axios.post(`${BASE_URL}/api/auth/register`,
+      formData,{
         withCredentials: true,
       }
     );
@@ -24,12 +19,10 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const loginUser = createAsyncThunk(
-  "/auth/login",
-
-  async (formData) => {
-    const response = await axios.post(`${BASE_URL}/api/auth/login`, formData, {
-      withCredentials: true,
+export const loginUser = createAsyncThunk("/auth/login", async (formData) => {
+    const response = await axios.post(`${BASE_URL}/api/auth/login`, 
+      formData, {
+        withCredentials: true,
     });
 
     console.log("response.data Login : ", response.data);
@@ -40,12 +33,8 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk(
-  "/auth/logout",
-
-  async () => {
-    const response = await axios.post(
-      `${BASE_URL}/api/auth/logout`,
+export const logoutUser = createAsyncThunk("/auth/logout", async () => {
+    const response = await axios.post(`${BASE_URL}/api/auth/logout`,
       {},
       {
         withCredentials: true,
