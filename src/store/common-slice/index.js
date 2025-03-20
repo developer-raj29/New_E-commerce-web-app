@@ -7,18 +7,14 @@ const initialState = {
   featureImageList: [],
 };
 
-export const getFeatureImages = createAsyncThunk(
-  "/order/getFeatureImages",
-  async () => {
+export const getFeatureImages = createAsyncThunk("/order/getFeatureImages", async () => {
     const response = await axios.get(`${BASE_URL}/api/common/feature/get`);
 
     return response.data;
   }
 );
 
-export const addFeatureImage = createAsyncThunk(
-  "/order/addFeatureImage",
-  async (image) => {
+export const addFeatureImage = createAsyncThunk("/order/addFeatureImage", async (image) => {
     const response = await axios.post(`${BASE_URL}/api/common/feature/add`, {
       image,
     });

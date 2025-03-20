@@ -39,23 +39,25 @@ const commonFeatureRouter = require("./routes/common/feature.routes");
 //   })
 // );
 
-app.use(
-  cors({
-    origin: [
-      "https://e-commerce-vitereact.vercel.app",
-      "http://localhost:5173",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-    ],
-    credentials: true, // Allows cookies to be sent
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "https://e-commerce-vitereact.vercel.app",
+//       "http://localhost:5173",
+//     ],
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: [
+//       "Content-Type",
+//       "Authorization",
+//       "Cache-Control",
+//       "Expires",
+//       "Pragma",
+//     ],
+//     credentials: true, // Allows cookies to be sent
+//   })
+// );
+
+app.use(cors());
 
 app.use(cookieParser());
 
