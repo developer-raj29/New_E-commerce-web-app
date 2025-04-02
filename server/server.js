@@ -21,24 +21,6 @@ const shopReviewRouter = require("./routes/shop/product.review.routes");
 
 const commonFeatureRouter = require("./routes/common/feature.routes");
 
-// app.use(
-//   cors({
-//     origin: [
-//       "https://new-e-commerce-web-app.vercel.app",
-//       "http://localhost:5173",
-//     ],
-//     methods: ["GET", "POST", "DELETE", "PUT"],
-//     allowedHeaders: [
-//       "Content-Type",
-//       "Authorization",
-//       "Cache-Control",
-//       "Expires",
-//       "Pragma",
-//     ],
-//     credentials: true,
-//   })
-// );
-
 app.use(
   cors({
     origin: [
@@ -46,13 +28,13 @@ app.use(
       "http://localhost:5173",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-    ],
+    // allowedHeaders: [
+    //   "Content-Type",
+    //   "Authorization",
+    //   "Cache-Control",
+    //   "Expires",
+    //   "Pragma",
+    // ],
     credentials: true, // Allows cookies to be sent
   })
 );
