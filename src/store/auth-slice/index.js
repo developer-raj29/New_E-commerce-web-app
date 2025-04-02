@@ -8,34 +8,12 @@ const initialState = {
   user: null,
 };
 
-export const registerUser = createAsyncThunk("/auth/register", async (formData) => {
-    const response = await axios.post(`${BASE_URL}/api/auth/register`,
-      formData,{
-        withCredentials: true,
-      }
-    );
-
-    return response.data;
-  }
-);
-
-export const loginUser = createAsyncThunk("/auth/login", async (formData) => {
-    const response = await axios.post(`${BASE_URL}/api/auth/login`, 
-      formData, {
-        withCredentials: true,
-    });
-
-    console.log("response.data Login : ", response.data);
-
-    localStorage.setItem("token", JSON.stringify(response.data.token));
-    localStorage.setItem("user", JSON.stringify(response.data.user));
-    return response.data;
-  }
-);
-
-export const logoutUser = createAsyncThunk("/auth/logout", async () => {
-    const response = await axios.post(`${BASE_URL}/api/auth/logout`,
-      {},
+export const registerUser = createAsyncThunk(
+  "/auth/register",
+  async (formData) => {
+    const response = await axios.post(
+      `${BASE_URL}/api/auth/register`,
+      formData,
       {
         withCredentials: true,
       }
@@ -45,16 +23,52 @@ export const logoutUser = createAsyncThunk("/auth/logout", async () => {
   }
 );
 
-export const checkAuth = createAsyncThunk("/auth/checkauth", async () => {
-  const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
+export const loginUser = createAsyncThunk("/auth/login", async (formData) => {
+  const response = await axios.post(`${BASE_URL}/api/auth/login`, formData, {
     withCredentials: true,
-    headers: {
-      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-    },
   });
+
+  // console.log("response.data Login : ", response.data);
+
+  localStorage.setItem("token", JSON.stringify(response.data.token));
+  localStorage.setItem("user", JSON.stringify(response.data.user));
+  return response.data;
+});
+
+export const logoutUser = createAsyncThunk("/auth/logout", async () => {
+  const response = await axios.post(
+    `${BASE_URL}/api/auth/logout`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
 
   return response.data;
 });
+
+export const checkAuth = createAsyncThunk(
+  "/auth/checkauth",
+  async (authToken) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${authToken}`, // Pass token here
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+      });
+
+      console.log("response auth: ", response);
+
+      return response.data;
+    } catch (error) {
+      console.error("Auth check failed:", error);
+      throw error;
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -81,7 +95,7 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        // console.log(action);
+        console.log("action: ", action);
 
         state.isLoading = false;
         state.user = action.payload.success ? action.payload.user : null;

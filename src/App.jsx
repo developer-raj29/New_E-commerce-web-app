@@ -22,18 +22,40 @@ import { Skeleton } from "@/components/ui/skeleton";
 import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import SearchProducts from "./pages/shopping-view/search";
+import "./App.css";
+import { loaderStyle } from "./config";
 
 const App = () => {
-  const { user, isAuthenticated, isLoading } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      dispatch(checkAuth());
+      const authToken = localStorage.getItem("token");
+      console.log("authToken: ", authToken);
+      dispatch(checkAuth(authToken));
     }
-  }, [isAuthenticated, dispatch]);
+  }, [isAuthenticated]);
 
-  if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
+  // Loading Icon
+  if (isLoading)
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <span style={loaderStyle}>🛒Loading...</span>
+        <style>
+          {`
+          @keyframes l3 {
+            0% {
+              background-position: 100%;
+            }
+          }
+        `}
+        </style>
+      </div>
+    );
+  // <Skeleton className="w-full bg-black min-h-screen" />;
 
   // console.log(isLoading, user);
 
@@ -43,10 +65,18 @@ const App = () => {
         <Route
           path="/"
           element={
-            <CheckAuth
-              isAuthenticated={isAuthenticated}
-              user={user}
-            ></CheckAuth>
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <Route
+                path="auth"
+                element={
+                  <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+                    <AuthLayout />
+                  </CheckAuth>
+                }
+              >
+                <Route path="login" element={<AuthLogin />} />
+              </Route>
+            </CheckAuth>
           }
         />
 

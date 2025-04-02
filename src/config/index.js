@@ -225,3 +225,15 @@ export const addressFormControls = [
     placeholder: "Enter any additional notes",
   },
 ];
+
+export const loaderStyle = {
+  fontSize: "40px",
+  fontFamily: "system-ui, sans-serif",
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  color: "#0000",
+  WebkitTextStroke: "1px #000",
+  background:
+    "linear-gradient(-60deg, #0000 45%, #000 0 55%, #0000 0) 0/300% 100% no-repeat text",
+  animation: "l3 2s linear infinite",
+};
