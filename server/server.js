@@ -21,36 +21,13 @@ const shopReviewRouter = require("./routes/shop/product.review.routes");
 
 const commonFeatureRouter = require("./routes/common/feature.routes");
 
-app.use(
-  cors({
-    origin: [
-      "https://new-e-commerce-web-app.vercel.app",
-      "http://localhost:5173",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    // Allow only the frontend origin
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Access-Control-Allow-Origin",
-      "Expires",
-      "Pragma",
-    ],
-    credentials: true, // Allow cookies and authentication headers
-  })
-);
-
-// ✅ Handle Preflight Requests (OPTIONS)
-app.options("*", cors());
-
 // app.use(
 //   cors({
 //     origin: [
-//       "https://e-commerce-vitereact.vercel.app",
+//       "https://new-e-commerce-web-app.vercel.app",
 //       "http://localhost:5173",
 //     ],
-//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     methods: ["GET", "POST", "DELETE", "PUT"],
 //     allowedHeaders: [
 //       "Content-Type",
 //       "Authorization",
@@ -58,9 +35,27 @@ app.options("*", cors());
 //       "Expires",
 //       "Pragma",
 //     ],
-//     credentials: true, // Allows cookies to be sent
+//     credentials: true,
 //   })
 // );
+
+app.use(
+  cors({
+    origin: [
+      "https://e-commerce-vitereact.vercel.app",
+      "http://localhost:5173",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
+    credentials: true, // Allows cookies to be sent
+  })
+);
 
 app.use(cookieParser());
 
