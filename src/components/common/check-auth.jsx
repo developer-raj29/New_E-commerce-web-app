@@ -1,20 +1,35 @@
+import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
-const CheckAuth = ({ isAuthenticated, user, children }) => {
+const CheckAuth = ({ children }) => {
   const location = useLocation();
 
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
+  console.log(
+    "user: ",
+    user,
+    "isAuthenticated: ",
+    isAuthenticated,
+    "isloading: ",
+    isLoading
+  );
   console.log(location.pathname, isAuthenticated);
 
   if (location.pathname === "/") {
     if (!isAuthenticated) {
       return <Navigate to="/auth/login" />;
     }
+    console.log(user?.role === "admin" ? "1 /admin/dashboard" : "1 /shop/home");
     return (
       <Navigate
         to={user?.role === "admin" ? "/admin/dashboard" : "/shop/home"}
       />
     );
   }
+
+  console.log(location.pathname, isAuthenticated);
 
   if (
     !isAuthenticated &&
@@ -31,12 +46,16 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
     (location.pathname.includes("/login") ||
       location.pathname.includes("/register"))
   ) {
+    console.log(user?.role === "admin" ? "2 /admin/dashboard" : "2 /shop/home");
+
     return (
       <Navigate
         to={user?.role === "admin" ? "/admin/dashboard" : "/shop/home"}
       />
     );
   }
+
+  console.log(location.pathname, isAuthenticated);
 
   if (
     isAuthenticated &&
@@ -51,6 +70,7 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
     user?.role === "admin" &&
     location.pathname.includes("shop")
   ) {
+    console.log(user?.role === "admin" ? "3 /admin/dashboard" : "3 /shop/home");
     return <Navigate to="/admin/dashboard" />;
   }
 

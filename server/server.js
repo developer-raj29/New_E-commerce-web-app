@@ -28,13 +28,13 @@ app.use(
       "http://localhost:5173",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    // allowedHeaders: [
-    //   "Content-Type",
-    //   "Authorization",
-    //   "Cache-Control",
-    //   "Expires",
-    //   "Pragma",
-    // ],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
     credentials: true, // Allows cookies to be sent
   })
 );

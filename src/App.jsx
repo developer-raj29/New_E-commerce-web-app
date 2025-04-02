@@ -64,11 +64,13 @@ const App = () => {
         <Route
           path="/"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth>
+              {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
               <Route
                 path="auth"
                 element={
-                  <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+                  <CheckAuth>
+                    {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
                     <AuthLayout />
                   </CheckAuth>
                 }
@@ -82,7 +84,8 @@ const App = () => {
         <Route
           path="/auth"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth>
+              {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
               <AuthLayout />
             </CheckAuth>
           }
@@ -94,7 +97,8 @@ const App = () => {
         <Route
           path="/admin"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth>
+              {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
               <AdminLayout />
             </CheckAuth>
           }
@@ -108,7 +112,8 @@ const App = () => {
         <Route
           path="/shop"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth>
+              {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
               <ShoppingLayout />
             </CheckAuth>
           }
