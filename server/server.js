@@ -27,6 +27,7 @@ app.use(
       "https://new-e-commerce-web-app.vercel.app",
       "http://localhost:5173",
     ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     // Allow only the frontend origin
     credentials: true, // Allow cookies and authentication headers
   })
