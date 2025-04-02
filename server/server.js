@@ -29,26 +29,16 @@ app.use(
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     // Allow only the frontend origin
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
     credentials: true, // Allow cookies and authentication headers
   })
 );
-// app.use(
-//   cors({
-//     origin: [
-//       "https://new-e-commerce-web-app.vercel.app",
-//       "http://localhost:5173",
-//     ],
-//     methods: ["GET", "POST", "DELETE", "PUT"],
-//     allowedHeaders: [
-//       "Content-Type",
-//       "Authorization",
-//       "Cache-Control",
-//       "Expires",
-//       "Pragma",
-//     ],
-//     credentials: true,
-//   })
-// );
 
 // app.use(
 //   cors({
