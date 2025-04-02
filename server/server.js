@@ -33,12 +33,16 @@ app.use(
       "Content-Type",
       "Authorization",
       "Cache-Control",
+      "Access-Control-Allow-Origin",
       "Expires",
       "Pragma",
     ],
     credentials: true, // Allow cookies and authentication headers
   })
 );
+
+// ✅ Handle Preflight Requests (OPTIONS)
+app.options("*", cors());
 
 // app.use(
 //   cors({
