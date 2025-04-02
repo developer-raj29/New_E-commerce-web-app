@@ -4,8 +4,9 @@ import { BASE_URL } from "@/config";
 
 const initialState = {
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: false,
   user: null,
+  error: null, // ✅ Add error field
 };
 
 export const registerUser = createAsyncThunk(
