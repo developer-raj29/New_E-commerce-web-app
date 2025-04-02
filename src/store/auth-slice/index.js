@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL } from "@/config";
+// import { BASE_URL } from "@/config";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const initialState = {
   isAuthenticated: false,
@@ -53,21 +54,25 @@ export const logoutUser = createAsyncThunk("/auth/logout", async () => {
 export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
   async (_, thunkAPI) => {
-    const authToken = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-    if (!authToken) {
+    if (!token) {
       return thunkAPI.rejectWithValue("No auth token found");
     }
 
     try {
-      const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
-      });
+      const response = await axios.get(
+        `${BASE_URL}/api/auth/check-auth`,
+        token,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Cache-Control":
+              "no-store, no-cache, must-revalidate, proxy-revalidate",
+          },
+        }
+      );
 
       return response.data;
     } catch (error) {

@@ -1,13 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL } from "@/config";
+//import { BASE_URL } from "@/config";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const initialState = {
   isLoading: false,
   searchResults: [],
 };
 
-export const getSearchResults = createAsyncThunk("/order/getSearchResults", async (keyword) => {
+export const getSearchResults = createAsyncThunk(
+  "/order/getSearchResults",
+  async (keyword) => {
     const response = await axios.get(`${BASE_URL}/api/shop/search/${keyword}`);
 
     return response.data;

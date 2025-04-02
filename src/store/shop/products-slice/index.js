@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL } from "@/config";
+//import { BASE_URL } from "@/config";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const initialState = {
   isLoading: false,
