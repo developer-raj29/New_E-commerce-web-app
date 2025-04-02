@@ -32,10 +32,9 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      const authToken = localStorage.getItem("token");
-      console.log("authToken: ", authToken);
-      dispatch(checkAuth(authToken));
+    const authToken = localStorage.getItem("token");
+    if (!isAuthenticated && authToken) {
+      dispatch(checkAuth());
     }
   }, [isAuthenticated]);
 

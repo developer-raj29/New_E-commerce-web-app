@@ -44,28 +44,34 @@ export const logoutUser = createAsyncThunk("/auth/logout", async () => {
     }
   );
 
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
   return response.data;
 });
 
 export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
-  async (authToken) => {
+  async (_, thunkAPI) => {
+    const authToken = localStorage.getItem("token");
+
+    if (!authToken) {
+      return thunkAPI.rejectWithValue("No auth token found");
+    }
+
     try {
       const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
         withCredentials: true,
         headers: {
-          Authorization: `Bearer ${authToken}`, // Pass token here
+          Authorization: `Bearer ${authToken}`,
           "Cache-Control":
             "no-store, no-cache, must-revalidate, proxy-revalidate",
         },
       });
 
-      console.log("response auth: ", response);
-
       return response.data;
     } catch (error) {
       console.error("Auth check failed:", error);
-      throw error;
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -80,19 +86,23 @@ const authSlice = createSlice({
     builder
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
+        state.error = null; // ✅ Reset error on new request
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = null;
         state.isAuthenticated = false;
+        state.user = null;
+        state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.user = null;
         state.isAuthenticated = false;
+        state.user = null;
+        state.error = action.error.message; // ✅ Save error
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
+        state.error = null; // ✅ Reset error on new request
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         console.log("action: ", action);
@@ -100,24 +110,29 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success;
+        state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
+        state.error = null; // ✅ Reset error on new request
       })
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success;
+        state.user = action.payload.success ? action.payload.user : null;
+        state.error = null;
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
-        state.user = null;
         state.isAuthenticated = false;
+        state.user = null;
+        state.error = action.payload || "Authentication check failed"; // ✅ Handle error message
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.isLoading = false;
