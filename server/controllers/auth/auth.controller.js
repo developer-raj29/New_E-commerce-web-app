@@ -48,21 +48,18 @@ const loginUser = async (req, res) => {
     const checkUser = await User.findOne({ email });
 
     if (!checkUser) {
-      return res.json({
+      return res.status(404).json({
         success: false,
-        message: "User doesn't exists! Please Register First",
+        message: "User doesn't exist! Please register first.",
       });
     }
 
-    const checkPasswordMatch = await bcrypt.compare(
-      password,
-      checkUser.password
-    );
+    const isPasswordValid = await bcrypt.compare(password, checkUser.password);
 
-    if (!checkPasswordMatch) {
-      return res.json({
+    if (!isPasswordValid) {
+      return res.status(401).json({
         success: false,
-        message: "Incorrect password! Please try again",
+        message: "Incorrect password! Please try again.",
       });
     }
 
@@ -73,28 +70,36 @@ const loginUser = async (req, res) => {
         email: checkUser.email,
         userName: checkUser.userName,
       },
-      "CLIENT_SECRET_KEY",
+      process.env.JWT_SECRET || "CLIENT_SECRET_KEY", // use env var if possible
       { expiresIn: "60m" }
     );
 
-    // console.log(token);
-
-    res.cookie("token", token, { httpOnly: true, secure: false }).json({
-      success: true,
-      message: "Logged In Successfully",
-      token: token,
-      user: {
-        userName: checkUser.userName,
-        email: checkUser.email,
-        role: checkUser.role,
-        id: checkUser._id,
-      },
-    });
+    console.log("Environment:", process.env.NODE_ENV);
+    // Set cookie properly
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // true only in production
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        maxAge: 60 * 60 * 1000, // 1 hour
+      })
+      .status(200)
+      .json({
+        success: true,
+        message: "Logged in successfully",
+        token: token,
+        user: {
+          userName: checkUser.userName,
+          email: checkUser.email,
+          role: checkUser.role,
+          id: checkUser._id,
+        },
+      });
   } catch (err) {
-    console.log(err);
+    console.error("Login error:", err);
     res.status(500).json({
       success: false,
-      message: "Logged in Failed, Please try again!",
+      message: "Login failed. Please try again!",
     });
   }
 };
@@ -114,7 +119,7 @@ const authMiddleware = async (req, res, next) => {
       req.body.token ||
       req.header("Authorization")?.replace("Bearer ", "");
 
-    console.log("Token: ", token);
+    console.log("Token Auth: ", token);
 
     if (!token) {
       return res.status(401).json({

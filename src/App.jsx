@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
@@ -51,7 +51,7 @@ const App = () => {
   if (isLoading) return <Loader />;
   // <Skeleton className="w-full bg-black min-h-screen" />;
 
-  // console.log(isLoading, user);
+  // if (!isAuthenticated) return <Navigate to="/unauth-page" />;
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -61,33 +61,12 @@ const App = () => {
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
 
-        <Route
-          path="/"
-          element={
-            <>
-              {/* <CheckAuth> */}
-              {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
-              <Route
-                path="auth"
-                element={
-                  <CheckAuth>
-                    {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
-                    <AuthLayout />
-                  </CheckAuth>
-                }
-              >
-                <Route path="login" element={<AuthLogin />} />
-              </Route>
-              {/* </CheckAuth> */}
-            </>
-          }
-        />
+        <Route path="/" element={<Navigate to="/shop/home" />} />
 
         <Route
           path="/auth"
           element={
             <CheckAuth>
-              {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
               <AuthLayout />
             </CheckAuth>
           }
