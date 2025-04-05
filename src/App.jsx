@@ -61,7 +61,7 @@ const App = () => {
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
 
-        <Route path="/" element={<Navigate to="/shop/home" />} />
+        <Route path="/" element={<CheckAuth></CheckAuth>} />
 
         <Route
           path="/auth"
