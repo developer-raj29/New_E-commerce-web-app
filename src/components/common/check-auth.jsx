@@ -15,12 +15,21 @@ const CheckAuth = ({ children }) => {
     "isloading: ",
     isLoading
   );
-  console.log(location.pathname, isAuthenticated);
+
+  console.log(
+    "location.pathname: ",
+    location.pathname,
+    "isAuthenticated: ",
+    isAuthenticated
+  );
 
   if (location.pathname === "/") {
-    if (!isAuthenticated) {
+    if (isLoading) {
+      return <Loader />; // Show a loading state instead of redirecting
+    } else if (!isAuthenticated) {
       return <Navigate to="/auth/login" />;
     }
+
     console.log(user?.role === "admin" ? "1 /admin/dashboard" : "1 /shop/home");
     return (
       <Navigate
@@ -29,7 +38,12 @@ const CheckAuth = ({ children }) => {
     );
   }
 
-  console.log(location.pathname, isAuthenticated);
+  console.log(
+    "location.pathname: ",
+    location.pathname,
+    "isAuthenticated: ",
+    isAuthenticated
+  );
 
   if (
     !isAuthenticated &&

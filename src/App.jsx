@@ -24,6 +24,7 @@ import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import SearchProducts from "./pages/shopping-view/search";
 import "./App.css";
 import { loaderStyle } from "./config";
+import Loader from "./components/common/Loader";
 
 const App = () => {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -37,23 +38,17 @@ const App = () => {
       dispatch(checkAuth());
     }
   }, [isAuthenticated]);
+  // useEffect(() => {
+  //   const authToken = localStorage.getItem("token");
+  //   if (authToken) {
+  //     dispatch(checkAuth());
+  //   }
+
+  //   console.log("authToken: ", authToken);
+  // }, []); // Run once on mount
 
   // Loading Icon
-  if (isLoading)
-    return (
-      <div className="w-full min-h-screen flex justify-center items-center">
-        <span style={loaderStyle}>🛒Loading...</span>
-        <style>
-          {`
-          @keyframes l3 {
-            0% {
-              background-position: 100%;
-            }
-          }
-        `}
-        </style>
-      </div>
-    );
+  if (isLoading) return <Loader />;
   // <Skeleton className="w-full bg-black min-h-screen" />;
 
   // console.log(isLoading, user);
@@ -61,10 +56,16 @@ const App = () => {
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
+        {/* <Route path="" element={<></>} /> */}
+
+        <Route path="/unauth-page" element={<UnauthPage />} />
+        <Route path="*" element={<NotFound />} />
+
         <Route
           path="/"
           element={
-            <CheckAuth>
+            <>
+              {/* <CheckAuth> */}
               {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
               <Route
                 path="auth"
@@ -77,7 +78,8 @@ const App = () => {
               >
                 <Route path="login" element={<AuthLogin />} />
               </Route>
-            </CheckAuth>
+              {/* </CheckAuth> */}
+            </>
           }
         />
 
@@ -126,9 +128,6 @@ const App = () => {
           <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="search" element={<SearchProducts />} />
         </Route>
-
-        <Route path="/unauth-page" element={<UnauthPage />} />
-        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

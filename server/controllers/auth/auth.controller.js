@@ -112,7 +112,7 @@ const authMiddleware = async (req, res, next) => {
     const token =
       req.cookies.token ||
       req.body.token ||
-      req.header("Authorization").replace("Bearer ");
+      req.header("Authorization")?.replace("Bearer ", "");
 
     console.log("Token: ", token);
 
@@ -127,19 +127,20 @@ const authMiddleware = async (req, res, next) => {
       const decoded = jwt.verify(
         token,
         process.env.JWT_SECRET || "CLIENT_SECRET_KEY"
-      ); // Use env variable
+      );
       req.user = decoded;
     } catch (err) {
-      // varification issue message
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         message: "Invalid Token",
         error: err.message,
       });
     }
+
+    // ✅ Call next only if everything is fine
     next();
   } catch (error) {
-    return res.json({
+    return res.status(401).json({
       success: false,
       message: "Unauthorized user! Invalid token.",
     });
