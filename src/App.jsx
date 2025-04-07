@@ -30,20 +30,18 @@ const App = () => {
   );
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const authToken = localStorage.getItem("token");
-    if (!isAuthenticated && authToken) {
-      dispatch(checkAuth());
-    }
-  }, [isAuthenticated]);
   // useEffect(() => {
   //   const authToken = localStorage.getItem("token");
-  //   if (authToken) {
+  //   if (!isAuthenticated && authToken) {
   //     dispatch(checkAuth());
   //   }
-
-  //   console.log("authToken: ", authToken);
-  // }, []); // Run once on mount
+  // }, [isAuthenticated]);
+  useEffect(() => {
+    const authToken = JSON.parse(localStorage.getItem("token"));
+    if (authToken) {
+      dispatch(checkAuth());
+    }
+  }, []);
 
   // Loading Icon
   if (isLoading) return <Loader />;

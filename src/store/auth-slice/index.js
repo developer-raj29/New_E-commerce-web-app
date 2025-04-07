@@ -54,7 +54,7 @@ export const logoutUser = createAsyncThunk("/auth/logout", async () => {
 export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
   async (_, thunkAPI) => {
-    const token = localStorage.getItem("token");
+    const token = JSON.parse(localStorage.getItem("token"));
 
     if (!token) {
       return thunkAPI.rejectWithValue("No auth token found");
@@ -84,7 +84,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {},
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -120,7 +122,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
-        state.error = null; // ✅ Reset error on new request
+        state.error = action.error.message || "Login failed";
       })
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
@@ -136,7 +138,10 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
-        state.error = action.payload || "Authentication check failed"; // ✅ Handle error message
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : "Authentication check failed";
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.isLoading = false;
