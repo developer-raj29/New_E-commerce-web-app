@@ -76,25 +76,37 @@ const loginUser = async (req, res) => {
 
     console.log("Environment:", process.env.NODE_ENV);
     // Set cookie properly
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // true only in production
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-        maxAge: 60 * 60 * 1000, // 1 hour
-      })
-      .status(200)
-      .json({
-        success: true,
-        message: "Logged in successfully",
-        token: token,
-        user: {
-          userName: checkUser.userName,
-          email: checkUser.email,
-          role: checkUser.role,
-          id: checkUser._id,
-        },
-      });
+    // res
+    //   .cookie("token", token, {
+    //     httpOnly: true,
+    //     secure: process.env.NODE_ENV === "production", // true only in production
+    //     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    //     maxAge: 60 * 60 * 1000, // 1 hour
+    //   })
+    //   .status(200)
+    //   .json({
+    //     success: true,
+    //     message: "Logged in successfully",
+    //     token: token,
+    //     user: {
+    //       userName: checkUser.userName,
+    //       email: checkUser.email,
+    //       role: checkUser.role,
+    //       id: checkUser._id,
+    //     },
+    //   });
+
+    res.status(200).json({
+      success: true,
+      message: "Logged in successfully",
+      token: token,
+      user: {
+        userName: checkUser.userName,
+        email: checkUser.email,
+        role: checkUser.role,
+        id: checkUser._id,
+      },
+    });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({

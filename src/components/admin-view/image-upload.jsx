@@ -5,7 +5,8 @@ import { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
-import { BASE_URL } from "@/config";
+// import { BASE_URL } from "@/config";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const ProductImageUpload = ({
   imageFile,

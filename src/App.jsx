@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
@@ -30,18 +30,23 @@ const App = () => {
   );
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const token = JSON.parse(sessionStorage.getItem("token"));
+    dispatch(checkAuth(token));
+  }, [dispatch]);
+
   // useEffect(() => {
   //   const authToken = localStorage.getItem("token");
   //   if (!isAuthenticated && authToken) {
   //     dispatch(checkAuth());
   //   }
   // }, [isAuthenticated]);
-  useEffect(() => {
-    const authToken = JSON.parse(localStorage.getItem("token"));
-    if (authToken) {
-      dispatch(checkAuth());
-    }
-  }, []);
+  // useEffect(() => {
+  //   const authToken = JSON.parse(localStorage.getItem("token"));
+  //   if (authToken) {
+  //     dispatch(checkAuth());
+  //   }
+  // }, []);
 
   // Loading Icon
   if (isLoading) return <Loader />;
@@ -52,13 +57,32 @@ const App = () => {
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
-        {/* <Route path="" element={<></>} /> */}
+        {/* Redirect root to /shop/home */}
+        <Route
+          path="/"
+          element={
+            <CheckAuth>
+              <Navigate to="/shop/home" replace />
+            </CheckAuth>
+          }
+        />
 
+        {/* Public Routes */}
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
 
-        <Route path="/" element={<CheckAuth></CheckAuth>} />
+        {/* <Route
+          path="/"
+          element={
+            <CheckAuth>
+              <Route path="shop" element={<ShoppingLayout />}>
+                <Route path="home" element={<ShoppingHome />} />
+              </Route>
+            </CheckAuth>
+          }
+        ></Route> */}
 
+        {/* Auth Routes */}
         <Route
           path="/auth"
           element={
@@ -71,10 +95,11 @@ const App = () => {
           <Route path="register" element={<AuthRegister />} />
         </Route>
 
+        {/* Admin Routes */}
         <Route
           path="/admin"
           element={
-            <CheckAuth>
+            <CheckAuth requiredRole="admin">
               {/* <CheckAuth isAuthenticated={isAuthenticated} user={user}> */}
               <AdminLayout />
             </CheckAuth>
@@ -86,6 +111,7 @@ const App = () => {
           <Route path="features" element={<AdminFeatures />} />
         </Route>
 
+        {/* Shopping Routes */}
         <Route
           path="/shop"
           element={

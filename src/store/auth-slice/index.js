@@ -7,7 +7,7 @@ const initialState = {
   isAuthenticated: false,
   isLoading: false,
   user: null,
-  error: null, // ✅ Add error field
+  token: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -51,34 +51,28 @@ export const logoutUser = createAsyncThunk("/auth/logout", async () => {
   return response.data;
 });
 
-export const checkAuth = createAsyncThunk(
-  "/auth/checkauth",
-  async (_, thunkAPI) => {
-    const token = JSON.parse(localStorage.getItem("token"));
+export const checkAuth = createAsyncThunk("/auth/checkauth", async (token) => {
+  // if (!token) {
+  //   return thunkAPI.rejectWithValue("No auth token found");
+  // }
+  try {
+    const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+      },
+    });
 
-    if (!token) {
-      return thunkAPI.rejectWithValue("No auth token found");
-    }
+    console.log("response.data checkAuth: ", response.data);
 
-    try {
-      const response = await axios.get(`${BASE_URL}/api/auth/check-auth`, {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
-      });
-
-      console.log("response.data checkAuth: ", response.data);
-
-      return response.data;
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      return thunkAPI.rejectWithValue(error.message);
-    }
+    return response.data;
+  } catch (error) {
+    console.error("Auth check failed:", error);
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -87,28 +81,30 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    resetTokenAndCredentials: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.token = null;
+      sessionStorage.removeItem("token");
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
-        state.error = null; // ✅ Reset error on new request
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
-        state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
-        state.error = action.error.message; // ✅ Save error
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
-        state.error = null; // ✅ Reset error on new request
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         console.log("action: ", action);
@@ -116,32 +112,27 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success;
-        state.error = null;
+        state.token = action.payload.success ? action.payload.token : null;
+        sessionStorage.setItem("token", JSON.stringify(action.payload.token));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
-        state.error = action.error.message || "Login failed";
+        state.token = null;
       })
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = action.payload.success;
         state.user = action.payload.success ? action.payload.user : null;
-        state.error = null;
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
-        state.error =
-          typeof action.payload === "string"
-            ? action.payload
-            : "Authentication check failed";
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -151,5 +142,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, resetTokenAndCredentials } = authSlice.actions;
 export default authSlice.reducer;
