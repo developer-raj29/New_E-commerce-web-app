@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "server": "cd server && npm run dev",
-    "dev": "concurrently --kill-others-on-fail -n \"client,server\" -c \"bgBlue,bgRed\" \"vite\" \"cd server && npm run dev\"",
+    "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
